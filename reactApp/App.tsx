@@ -1,29 +1,21 @@
-import React from "react";
-import {SafeAreaView,View,Text,StyleSheet} from 'react-native'
+import { View, Text, SafeAreaView, ScrollView } from 'react-native'
+import React from 'react'
+import FlatCards from './components/FlatCards'
+import ElevatedCards from './components/ElevatedCards'
+import FancyCard from './components/FancyCard'
+import ActionCard from './components/ActionCard'
 
-function App(){
-
-  return(
-      <View style={styles.container}>
-        <Text style={styles.text}>Hello World</Text>
-        <Text style={styles.text}>Hello World</Text>
-        <Text style={styles.text}>Hello World</Text>
-        <Text style={styles.text}>Hello World</Text>
-        <Text style={styles.text}>Hello World</Text>
-      </View>
+const App = () => {
+  return (
+    <SafeAreaView>
+      <ScrollView>
+        <FlatCards />
+        <ElevatedCards />
+        <FancyCard />
+        <ActionCard />
+      </ScrollView>
+    </SafeAreaView>
   )
-
 }
 
-const styles = StyleSheet.create({
-  container:{
-    flex: 1,
-    alignItems:'center',
-    justifyContent:'center'
-  },
-  text:{
-    color:'green',
-    fontSize:33
-  }
-})
 export default App
