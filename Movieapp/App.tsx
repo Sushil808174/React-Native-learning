@@ -1,23 +1,54 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { SearchBar } from 'react-native-screens'
-import SearchScreen from './screens/SearchScreen'
-import MovieDetailsScreen from './screens/MovieDetailsScreen'
+import React, { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
-const Stack = createNativeStackNavigator();
+import RegistrationScreen from './screens/RegistrationScreen';
+import LoginScreen from './screens/LoginScreen';
+import SearchScreen from './screens/SearchScreen';
+import ProfileScreen from './screens/ProfileScreen'; // Add your main application screens
+
+const AuthStack = createStackNavigator();
+const MainStack = createBottomTabNavigator();
+
+const AuthFlow = () => {
+  return (
+    <AuthStack.Navigator initialRouteName="Registration">
+      <AuthStack.Screen name="Registration" component={RegistrationScreen} />
+      <AuthStack.Screen name="Login" component={LoginScreen} />
+    </AuthStack.Navigator>
+  );
+};
+
+const MainFlow = () => {
+  return (
+    <MainStack.Navigator>
+      <MainStack.Screen name="Search" component={SearchScreen} />
+      <MainStack.Screen name="Profile" component={ProfileScreen} />
+      {/* Add more screens for your main application */}
+    </MainStack.Navigator>
+  );
+};
+
 const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    checkAuthentication(); // Check if the user is authenticated on app launch
+  }, []);
+
+  const checkAuthentication = async () => {
+    // Check if the user is authenticated (e.g., token stored in AsyncStorage)
+    const token = await AsyncStorage.getItem('token');
+    setIsAuthenticated(!!token);
+  };
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Search">
-        <Stack.Screen name="Search" component={SearchScreen} />
-        <Stack.Screen name="MovieDetails" component={MovieDetailsScreen} />
-      </Stack.Navigator>
+      {isAuthenticated ? <MainFlow /> : <AuthFlow />}
     </NavigationContainer>
-  )
-}
+  );
+};
 
-export default App
-
-const styles = StyleSheet.create({})
+export default App;
