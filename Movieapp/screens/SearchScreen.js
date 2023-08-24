@@ -3,10 +3,30 @@ import { View, FlatList, StyleSheet, TouchableOpacity, Text, Image } from 'react
 import SearchBar from '../components/SearchBar';
 import { useNavigation } from '@react-navigation/native';
 
-const SearchScreen = () => {
+
+const LoginHander= ()=>{
+  const navigation = useNavigation();
+  const handleLogin = ()=>{
+    navigation.navigate('Login')
+  }
+  const handleRegister = ()=>{
+    navigation.navigate('Register')
+  }
+  return(
+    <View style={styles.loginContainer}>
+    <TouchableOpacity onPress={handleLogin} style={styles.loginBtn}>
+      <Text style={styles.loginText}>Login</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={handleRegister} style={styles.registerBtn}>
+      <Text style={styles.registerText}>Register</Text>
+    </TouchableOpacity>
+  </View>
+  )
+}
+
+const SearchHandler = ()=>{
   const navigation = useNavigation();
   const [searchResults, setSearchResults] = useState([]);
-
   const handleSearch = async (query) => {
     try {
       const apiKey = 'e8921bca';
@@ -24,13 +44,14 @@ const SearchScreen = () => {
     }
   };
 
+
   const handleMovieDetails = (movie) => {
     navigation.navigate('MovieDetails', { movie });
   };
+  return(
+    <>
 
-  return (
-    <View style={styles.container}>
-      <SearchBar onSearch={handleSearch} />
+    <SearchBar onSearch={handleSearch} />
       <FlatList
         data={searchResults}
         keyExtractor={(item) => item.imdbID}
@@ -44,6 +65,18 @@ const SearchScreen = () => {
           </TouchableOpacity>
         )}
       />
+    </>
+  )
+}
+
+const SearchScreen = () => {
+  const navigation = useNavigation();
+  const [isAuthenticated,setIsAuthenticated] = useState(true)
+  
+  return (
+    <View style={styles.container}>
+      { isAuthenticated ? <LoginHander /> : <SearchHandler />}
+      
     </View>
   );
 };
@@ -52,6 +85,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+  },
+  loginContainer:{
+      flexDirection:'row',
+      justifyContent:'space-around',
+      alignItems:'center'
+  },
+  loginBtn:{
+    flex:.5,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:'green',
+    width:60,
+    height:35,
+    borderRadius:8,
+    marginRight:5
+  },
+  loginText:{
+    color:'white',
+    fontSize:16,
+    fontWeight:'600'
+  },
+  registerBtn:{
+    flex:.5,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:'blue',
+    width:60,
+    height:35,
+    borderRadius:8,
+    marginLeft:5
+  },
+  registerText:{
+    color:'white',
+    fontSize:16,
+    fontWeight:'600'
   },
   movieItem: {
     flexDirection: 'row',
