@@ -26,7 +26,7 @@ const CartScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Shopping Cart</Text>
       {cartItems.map(item => (
-        <View key={item.id} style={styles.cartItem}>
+        <View key={item.idCategory} style={styles.cartItem}>
           <Image
             source={{
               uri: item.strCategoryThumb,
