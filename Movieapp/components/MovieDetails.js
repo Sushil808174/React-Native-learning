@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 
 const MovieDetails = ({ movie }) => {
   return (
+    
     <View style={styles.container}>
       <Image source={{ uri: movie.Poster }} style={styles.poster} />
       <Text style={styles.title}>{movie.Title}</Text>
